@@ -15,7 +15,7 @@ jobs:
 
                docker pull registry.fortidevsec.forticloud.com/fdevsec_sast:latest
 
-               docker run --rm --mount type=bind,source=$PWD,target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest env
+               docker run --rm --env CIRCLECI=$CIRCLECI --env CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM --env CIRCLE_SHA1=$CIRCLE_SHA1 --env CIRCLE_BRANCH=$CIRCLE_BRANCH --mount type=bind,source=$PWD,target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest env
 
 
 workflows:
