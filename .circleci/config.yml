@@ -1,28 +1,14 @@
 version: 2.1
-
 jobs:
-
     SAST:
-
         machine: yes
-
         steps:
-
           - checkout
-
           - run: |
-               env
-
+               env | grep -E "CIRCLECI|CIRCLE_BUILD_NUM|CIRCLE_BRANCH|CIRCLE_SHA1" > /tmp/env
                docker pull registry.fortidevsec.forticloud.com/fdevsec_sast:latest
-
-               docker run --rm --env CIRCLECI=$CIRCLECI --env CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM --env CIRCLE_SHA1=$CIRCLE_SHA1 --env CIRCLE_BRANCH=$CIRCLE_BRANCH --mount type=bind,source=$PWD,target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest env
-
-
+               docker run --rm --env-file /tmp/env --add-host fortidevsec.forticloud.com:10.34.160.80 --mount type=bind,source=$PWD,target=/scan registry.fortidevsec.forticloud.com/fdevsec_sast:latest
 workflows:
-
     Scans:
-
         jobs:
-
           - SAST
-
